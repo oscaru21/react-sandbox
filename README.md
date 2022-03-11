@@ -44,3 +44,52 @@ return (
     </div>
     )
 ```
+## Props.
+
+To make our Components more dynamic and reusable we use something called props, these are parameters passed throught the component tag that we can use in our component constructor with the name props like this:
+```javascript
+function Component(props){
+    return <> <h1>{props.parameter}</h1>
+}
+```
+
+We can also use destructure notation in order to get the parameters directly:
+```javascript
+function Component({parameter}){
+    return <> <h1>{parameter}</h1>
+}
+```
+
+Finally we can define default props values in case we don't receive an input using the defaultProps attribute:
+```javascript
+Component.defaultProps = {
+    parameter: 'default parameter value'
+}
+}
+```
+# State
+## Component State.
+
+State is very similar to props, but it is private and fully controlled by the component. The main difference is that props are passed into the component and they should not change, on the other side the state can change and affects the rendering of the component. Calls to setState are asynchronous.
+
+In order to use state in a functional component we need to use the useState Hook. (Hooks always start with 'use'):
+```javascript
+const [stateName, setStateName] = useState(defaultValue);
+```
+
+## Global State.
+
+We can pass the state from a parent component to the children as props.
+
+### Prop Drilling.
+
+Imagine that you have define a global state that needs to be updated with an event that is triggered in one of the childrens, for example an element of a list needs to be deleted but the list lives in the parent Component, in order to do this we need to transfer the delete function from the parent to the children as a prop in order to use it with the event.
+
+```javascript
+const deleteElement = () => setState();
+return (
+    <Parent>
+        <Children handleDelete={deleteElement}></Children>
+    </Parent>
+
+```
