@@ -93,3 +93,47 @@ return (
     </Parent>
 
 ```
+
+# Forms
+
+En React, el estado mutable es mantenido normalmente en la propiedad estado de los componentes, y solo se actualiza con setState().
+
+Podemos combinar ambos haciendo que el estado de React sea la “única fuente de la verdad”. De esta manera, los componentes React que rendericen un formulario también controlan lo que pasa en ese formulario con las subsecuentes entradas del usuario.
+## Buttons
+In order to perform some visual real time validation we can use buttons that behave differently depending on the state of the input value, for that reason is good to have a custom component that can be enable or disable, or that can change the color depending the application we will use it for.
+
+# Routes
+First we need to install react-router-dom.
+
+```
+yarn add react-router-dom
+```
+
+## Route.
+ Its responsibility is to render some UI when its path matches the current URL. When the <Route>'s path matches the current URL, it renders its element prop (your component). This element should always be wrapped with the <Routes /> component.
+
+ ```javascript
+ import {BrowserRouter as Router, Route} from 'react-router-dom'
+ <Router>
+    <Routes>
+        <Route path="/path" element={<Component />}/>
+    </Routes>
+</Router>
+ ```
+## Link
+
+The <Link> component replaces the ancher tag allowing the applicatio to immediatly navigate between the routes without refreshing the page.
+
+## NavLink (deprecated for v6, useMatch instead)
+A special version of the <Link> that will add styling attributes to the rendered element when it matches the current URL. This is really helpful to simplify the styling of navbar components to visualize the active page.
+
+## useParams
+useParams is a react-router-dom Hook tha allow us to retrieve all the path variables, that we specify in the <Route> component like this:
+```javascript
+<Route path=":paramName" element={<Component />} />
+```
+
+## useNavigate
+useNavigate is a new hook introduced in React Router v6 and it is extremely useful and easy to use. We just need to call the hook eith the route, this is seful if we want to redirect to a different page like notfound Page.
+
+# Context
