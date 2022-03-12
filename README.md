@@ -137,3 +137,33 @@ useParams is a react-router-dom Hook tha allow us to retrieve all the path varia
 useNavigate is a new hook introduced in React Router v6 and it is extremely useful and easy to use. We just need to call the hook eith the route, this is seful if we want to redirect to a different page like notfound Page.
 
 # Context
+In a typical React application, data is passed top-down (parent to child) via props, but such usage can be cumbersome for certain types of props that are required by many components within an application. Context provides a way to share values like these between components without having to explicitly pass a prop through every level of the tree. These feature really simplifies the props drilling process.
+
+In order to create a context, we should create a ComponentContext.js file that import the createContext API from react and the useState Hook.
+
+```javascript
+import { createContext, useState } from "react";
+const ComponentContext = createContext();
+```
+then we should create a context provider in order that all the Components that consume it can subscribe to the Context changes. This component takes a value element that contains an object with all the states of the context, every time that the value element changes all the consumer Component re render themselves.
+
+```javascript
+export const ComponentProvider = ({children}) => {
+  return (
+    <ComponentContext.Provider value={{}}>
+      {children}
+    </ComponentContext.Provider>
+  );
+};
+```
+# Side effects
+## useEffect() Hook
+ The function passed to useEffect will run after the render is committed to the screen. Think of effects as an escape hatch from React’s purely functional world into the imperative world.
+ By default, effects run after every completed render, but you can choose to fire them only when certain values have changed.
+
+To implement a conitionally firing, pass a second argument to useEffect that is the array of values that the effect depends on. 
+```javascript
+useEffect(() => {
+    //side effects to implement everytime that the souce value changes
+}, [source])
+```
