@@ -167,3 +167,47 @@ useEffect(() => {
     //side effects to implement everytime that the souce value changes
 }, [source])
 ```
+
+# REST API Requests.
+In order to make our frontend UI interact with a backend service that serves data we have to make requests to the specific endpoints that the web services provide, in the early stages of our development process we can mock this backend service with a npm library called **JSON-server** that we can install using the command:
+```
+npm install -g json-server
+```
+Create a db.json file with some data
+```json
+{
+    "collectionName": [
+        {"id": 1, "value": "mock value number 1"}
+    ]
+}
+```
+Start JSON Server
+```
+json-server --watch db.json --port 5000
+```
+## Fetch data from an API.
+An async function can contain an await expression, which pauses execution of the async function and waits for resolution of the passed Promise, then resumes execution of the async function and returns the resolved value.
+
+```javascript
+const getInfo = async () => {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    //this will execute once the promise has been resolved
+    setInfo(data);
+  };
+```
+We can also add properties to the fetch API like this:
+```javascript
+const addInfo = async (item) => {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        body: JSON.stringify(item)
+    });
+    const data = await response.json();
+    //this will execute once the promise has been resolved
+    setInfo(data);
+  };
+```
