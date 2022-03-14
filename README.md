@@ -211,3 +211,86 @@ const addInfo = async (item) => {
     setInfo(data);
   };
 ```
+# Other technologies.
+## tailwindcss
+Tailwind CSS works by scanning all of your HTML files, JavaScript components, and any other templates for class names, generating the corresponding styles and then writing them to a static CSS file.
+- Install Tailwind CSS:
+```
+npm install -D tailwindcss
+npx tailwindcss init
+```
+- For up to date configuration you can visit tailwindcss docs:
+[tailwindcss Docs](https://v1.tailwindcss.com/docs/installation)
+
+- Start the build process:
+```
+npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch
+```
+# tailwindcss important classes.
+# Flexbox
+- Flex Direction (flex-{direction})
+- Flex Wrap (flex-{value})
+- Flex (flex-{1, auto, initial, none})
+- Justify Content (justify-{value})
+- Justify Items (justify-items-{value})
+- Justify Self (justify-self-{value})
+- Align Content (content-{value})
+- Align Items (items-{value})
+- Align Self (self-{value})
+# Grid
+- Grid Template Columns
+- Grid Column Start / End
+- Grid Template Rows
+- Grid Row Start / End
+- Grid Auto Flow
+- Grid Auto Columns
+- Grid Auto Rows
+Gap
+# Responsive design
+We can make a Component responsive by adding the class {sm, md, lg, xl, 2xl}:{properti}
+```html
+<div class="w-16 md:w-32 lg:w-48" src="...">Content</div>
+```
+## daisyUI
+daisyUI adds component classes to Tailwind CSS. 
+- Install the plugin
+```
+npm i daisyui
+```
+
+# Interacting with Third party APIs
+
+## Github API
+Github API is really easy to use, we only need to make a request to the base url followed by the resources name and identifier like so:
+```
+GET https://api.github.com/users/oscaru21
+```
+## Reducers
+Reducers are functions to manipulate our states, there are third party reducers like Redux but they are not always neccesary unless the application is really big, for all the other cases we can use useContext and useReducer Hooks. This will replace the use of useState.
+
+1) First we will need to create our reducer function with two arguments, a **state** and an **action**, and we will use a switch statement in order to perform the action.
+```javascript
+const reducer = (state, action) => {
+    switch(action.type){
+        default:
+            return state
+    }
+}
+```
+2) In order to manage all of our states, we need to add them to our state object that we will define in our initial state in our useReducer Hook, this will return a dispath function that is similar to the setState function of useState but it works for all of the states in the state object:
+```javascript
+//define initialState object
+const initialState = {
+    state1: [],
+    state2: true,
+    state3: 10
+}
+//define the reducer to use
+const [state, dispatch] = useReducers(reducer, initialState);
+```
+3) So when we want to change an state we need to call the dispatch function with the action object that contains a type an a payload:
+
+```javascript
+//change state
+dispatch({type: 'CHANGE_STATE', payload: {})
+```
