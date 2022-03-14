@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import GithubContext from "../../context/github/GithubContext";
-import githubReducer from "../../context/github/GithubReducer";
 
 function UserSearch() {
   const [text, setText] = useState("");
