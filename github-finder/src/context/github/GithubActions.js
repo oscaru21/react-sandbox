@@ -1,31 +1,33 @@
-import axios from "axios";
-const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
-const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
+import axios from 'axios'
+const GITHUB_URL = process.env.REACT_APP_GITHUB_URL
+const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN
 
 const github = axios.create({
   baseURL: GITHUB_URL,
-  headers: {
-    Authorization: `token ${GITHUB_TOKEN}`,
-    Accept: "application/vnd.github.v3+json",
-  },
-});
+  headers: { Authorization: `token ${GITHUB_TOKEN}` },
+})
 
-//search users
+// Get search results
 export const searchUsers = async (text) => {
   const params = new URLSearchParams({
     q: text,
-  });
+  })
 
   const response = await github.get(`/search/users?${params}`)
   return response.data.items
-};
+}
 
-//get user and repos
+// Get user and repos
 export const getUserAndRepos = async (login) => {
-    const [user, repos] = await Promise.all([
-        github.get(`/users/${login}`),
-        github.get(`/users/${login}/repos`)
-    ])
+  const params = new URLSearchParams({
+    sort: 'created',
+    per_page: 10
+  })
 
-    return {user: user.data, repos: repos.data}
+  const [user, repos] = await Promise.all([
+    github.get(`/users/${login}`),
+    github.get(`/users/${login}/repos?${params}`),
+  ])
+
+  return { user: user.data, repos: repos.data }
 }
