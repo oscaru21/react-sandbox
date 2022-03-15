@@ -294,3 +294,25 @@ const [state, dispatch] = useReducers(reducer, initialState);
 //change state
 dispatch({type: 'CHANGE_STATE', payload: {})
 ```
+
+# Axios Http Client.
+1) Install the library:
+```
+npm i axios
+```
+2) Import it to our project:
+```javascript
+import axios from 'axios'
+```
+3) Create an instance of axios and define the properties:
+```javascript
+const client = axios.create({
+  baseURL: URL,
+  headers: {},
+});
+```
+4) Call the http methods using the instance, with axios you don't need to call response.json() because it returns the response with a data object:
+```javascript
+const response = await client.get(URI)
+  return response.data
+```
