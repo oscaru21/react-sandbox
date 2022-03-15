@@ -12,7 +12,7 @@ function UserItem({ user: { login, avatar_url } }) {
         <div className="space-y-4">
           <h2 className="card-title">{login}</h2>
           <div className="card-actions justify-start">
-            <Link to="">
+            <Link to={`/user/${login}`}>
               <button className="btn btn-primary-ghost btn-xs capitalize ">View Profile</button>
             </Link>
           </div>
