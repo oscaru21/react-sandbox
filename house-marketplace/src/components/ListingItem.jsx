@@ -28,7 +28,7 @@ function ListingItem({ listing, id, onDelete }) {
               : listing.regularPrice
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  {listing.type == 'rent' && ' / Month '}
+                  {listing.type === 'rent' && ' / Month '}
           </p>
           <div className="categoryListingInfoDiv">
               <img src={bedIcon} alt="" />
@@ -43,7 +43,7 @@ function ListingItem({ listing, id, onDelete }) {
         </div>
       </Link>
       {onDelete && 
-          <DeleteIcon className='removeIcon' fill='rgb(231,76,60)' onCLick={() => onDelete(listing.id, listing.name)} />
+          <DeleteIcon className='removeIcon' fill='rgb(231,76,60)' onClick={() => onDelete(listing.id, listing.name)} />
       }
     </li>
   );

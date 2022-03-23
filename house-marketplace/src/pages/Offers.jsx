@@ -1,7 +1,7 @@
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -9,14 +9,16 @@ import {
   orderBy,
   query,
   where,
+  startAfter,
 } from "firebase/firestore";
 import ListingItem from "../components/ListingItem";
 
 function Offers() {
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lasFetchedListing, setLastFetchedListing] = useState();
 
-  const params = useParams();
+  //const params = useParams();
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -32,6 +34,9 @@ function Offers() {
         );
         //execute query
         const querySnap = await getDocs(q);
+
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+        setLastFetchedListing(lastVisible);
 
         let listings = [];
 
@@ -51,6 +56,40 @@ function Offers() {
     fetchListings();
   }, []);
 
+  // pagination
+  const onFetchMoreListings = async () => {
+    try {
+      //get a reference
+      const listingsRef = collection(db, "listings");
+      //create a query
+      const q = query(
+        listingsRef,
+        where("offer", "==", true),
+        orderBy("timestamp", "desc"),
+        startAfter(lasFetchedListing),
+        limit(10)
+      );
+      //execute query
+      const querySnap = await getDocs(q);
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetchedListing(lastVisible);
+
+      let listings = [];
+
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      setListings((prevState) => [...prevState, ...listings]);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Could not fetch Listings!");
+    }
+  };
+
   return (
     <div className="category">
       <header>
@@ -60,17 +99,26 @@ function Offers() {
         <h3>Loading...</h3>
       ) : listings && listings.length > 0 ? (
         <>
-            <main>
-                <ul className="categoryListings">
-                    {listings.map(listing => (
-                        <ListingItem listing={listing.data} id={listing.id} key={listing.id}/>
-                    ))}
-                </ul>
-            </main>
+          <main>
+            <ul className="categoryListings">
+              {listings.map((listing) => (
+                <ListingItem
+                  listing={listing.data}
+                  id={listing.id}
+                  key={listing.id}
+                />
+              ))}
+            </ul>
+          </main>
         </>
       ) : (
         <p>There are no current offers</p>
       )}
+       <br />
+          <br />
+          {lasFetchedListing && (
+            <p className="loadMore" onClick={onFetchMoreListings}>Load More</p>
+          )}
     </div>
   );
 }

@@ -9,12 +9,14 @@ import {
   orderBy,
   query,
   where,
+  startAfter,
 } from "firebase/firestore";
 import ListingItem from "../components/ListingItem";
 
 function Category() {
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lasFetchedListing, setLastFetchedListing] = useState();
 
   const params = useParams();
 
@@ -28,10 +30,13 @@ function Category() {
           listingsRef,
           where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
-          limit(10)
+          limit(1)
         );
         //execute query
         const querySnap = await getDocs(q);
+
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+        setLastFetchedListing(lastVisible);
 
         let listings = [];
 
@@ -49,7 +54,41 @@ function Category() {
     };
 
     fetchListings();
-  }, []);
+  }, [params.categoryName]);
+
+  // pagination
+  const onFetchMoreListings = async () => {
+    try {
+      //get a reference
+      const listingsRef = collection(db, "listings");
+      //create a query
+      const q = query(
+        listingsRef,
+        where("type", "==", params.categoryName),
+        orderBy("timestamp", "desc"),
+        startAfter(lasFetchedListing),
+        limit(10)
+      );
+      //execute query
+      const querySnap = await getDocs(q);
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetchedListing(lastVisible);
+
+      let listings = [];
+
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      setListings((prevState) => [...prevState, ...listings]);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Could not fetch Listings!");
+    }
+  };
 
   return (
     <div className="category">
@@ -60,13 +99,23 @@ function Category() {
         <h3>Loading...</h3>
       ) : listings && listings.length > 0 ? (
         <>
-            <main>
-                <ul className="categoryListings">
-                    {listings.map(listing => (
-                        <ListingItem listing={listing.data} id={listing.id} key={listing.id}/>
-                    ))}
-                </ul>
-            </main>
+          <main>
+            <ul className="categoryListings">
+              {listings.map((listing) => (
+                <ListingItem
+                  listing={listing.data}
+                  id={listing.id}
+                  key={listing.id}
+                />
+              ))}
+            </ul>
+          </main>
+
+          <br />
+          <br />
+          {lasFetchedListing && (
+            <p className="loadMore" onClick={onFetchMoreListings}>Load More</p>
+          )}
         </>
       ) : (
         <p>No listings for {params.categoryName}</p>

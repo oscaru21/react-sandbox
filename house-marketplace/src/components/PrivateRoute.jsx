@@ -1,5 +1,5 @@
 import useAuthStatus from "../hooks/useAuthStatus";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import SignIn from "../pages/SignIn";
 
 const PrivateRoute = () => {
