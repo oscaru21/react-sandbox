@@ -102,7 +102,7 @@ Podemos combinar ambos haciendo que el estado de React sea la “única fuente d
 ## Buttons
 In order to perform some visual real time validation we can use buttons that behave differently depending on the state of the input value, for that reason is good to have a custom component that can be enable or disable, or that can change the color depending the application we will use it for.
 
-# Routes
+# Routes (react-router-dom)
 First we need to install react-router-dom.
 
 ```
@@ -134,8 +134,31 @@ useParams is a react-router-dom Hook tha allow us to retrieve all the path varia
 ```
 
 ## useNavigate
-useNavigate is a new hook introduced in React Router v6 and it is extremely useful and easy to use. We just need to call the hook eith the route, this is seful if we want to redirect to a different page like notfound Page.
+useNavigate is a new hook introduced in React Router v6 and it is extremely useful and easy to use. We just need to call the hook with the route, this is useful if we want to redirect to a different page like notfound Page.
 
+This hook can replace the link component by using it in combination with the onCLick attribute like this 
+```javascript
+import {useNavigate} from 'react-router-dom'
+function Component(){
+  //the hook return a function that takes the url as a parameter
+  const navigate() = useNavigate()
+  return <button onCLick={() => navigate('/')}>Home</>button>
+}
+
+export default Component
+```
+
+## useLocation
+useLocation Hook return an object with information about the corrent path, this can be use to perform render based on the path changes:
+```javascript
+{
+  pathname: '/', 
+  search: '', 
+  hash: '', 
+  state: null, 
+  key: 'fw1hkkbb'
+}
+```
 # Context
 In a typical React application, data is passed top-down (parent to child) via props, but such usage can be cumbersome for certain types of props that are required by many components within an application. Context provides a way to share values like these between components without having to explicitly pass a prop through every level of the tree. These feature really simplifies the props drilling process.
 
@@ -316,3 +339,34 @@ const client = axios.create({
 const response = await client.get(URI)
   return response.data
 ```
+# Advances react Hooks.
+## useRef
+This hook will allow you to get a reference to a DOM element.
+
+A really good use of useRef hook is to determine if a component is mounted or not, because if a component is supposed to be mounted once we fetch some data and before we have a response another object tries to manipulate this unmounted component we will get an error, so we need to validate if a certain component is mounted before changing it.
+so we get a reference to that object like this>
+```javascript
+import { useState, useEffect, useRef } from 'react'
+function Component() {
+  const [data, setData] = useState({})
+  const isMounted = useRef(true)
+
+  useEffect(() => {
+    fetch(URL).then((res) => res.json()).then((data) => {
+        if (isMounted.current) {
+            //if we try to change the state of a component that has been unmounted we will get an error
+            setData(data)
+        }
+      })
+
+    // Runs when current component is unmounted
+    return () => {
+      isMounted.current = false
+    }
+  }, [isMounted])
+
+  return <h1>Text</h1>
+}
+export default Component
+```
+
