@@ -24,26 +24,26 @@ function TweetForm() {
         </div>
         <div className="flex flex-row justify-between ml-4 py-3 items-center">
           <div className="flex flex-row justify-start">
-            <Button Icon={FiImage} size="1" to="/" color="[#1da1f2]" />
-            <Button Icon={AiOutlineGif} size="1" to="/" color="[#1da1f2]" />
+            <Button Icon={FiImage} size="1" to="/" color="sky-500" />
+            <Button Icon={AiOutlineGif} size="1" to="/" color="sky-500" />
             <Button
               Icon={AiOutlineAlignLeft}
               size="1"
               to="/"
-              color="[#1da1f2]"
+              color="sky-500"
             />
-            <Button Icon={BsEmojiSmile} size="1" to="/" color="[#1da1f2]" />
+            <Button Icon={BsEmojiSmile} size="1" to="/" color="sky-500" />
             <Button
               Icon={IoCalendarClearOutline}
               size="1"
               to="/"
-              color="[#1da1f2]"
+              color="sky-500"
             />
             <Button
               Icon={IoLocationOutline}
               size="1"
               to="/"
-              color="[#1da1f2]"
+              color="sky-500"
             />
           </div>
           <div className="flex flex-row justify-center py-2 rounded-full bg-[#1da1f2] hover:bg-opacity-75 text-white cursor-pointer">

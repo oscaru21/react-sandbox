@@ -16,7 +16,7 @@ import Button from "./Button";
 function Sidebar() {
   return (
     <div className="flex flex-col items-end xl:items-start h-screen border-r basis-1/5 sticky top-0 self-start ">
-      <Button Icon={FaTwitter} size="3" to="/" color="[#1da1f2]"/>
+      <Button Icon={FaTwitter} size="3" to="/" color="sky-500"/>
 
       <SidebarOption Icon={FaHome} text={"Home"} />
       <SidebarOption Icon={FaHashtag} text={"Explore"} />

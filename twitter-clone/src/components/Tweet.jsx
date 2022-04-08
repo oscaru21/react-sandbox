@@ -3,7 +3,8 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { FiImage } from "react-icons/fi";
 import Button from "./Button";
 
-function Tweet({ content, imgUrl }) {
+function Tweet({ tweet }) {
+  const {text, imgUrl} = tweet;
   return (
     <div className="flex flex-row border-b pt-3 hover:bg-gray-100 cursor-pointer">
       <div className="avatar pl-4 ">
@@ -21,7 +22,7 @@ function Tweet({ content, imgUrl }) {
           <p className="text-gray-500">3h</p>
         </div>
         <div className="flex flex-col">
-          <p className="pb-3">{content}</p>
+          <p className="pb-3">{text}</p>
           {imgUrl && imgUrl !== "" && (
             <div className="card w-full">
               <figure>
